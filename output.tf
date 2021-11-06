@@ -18,3 +18,7 @@ output "eks_worker_node_securitygroup_id" {
 output "eks_cluster_version" {
   value = aws_eks_cluster.eks_cluster.version
 }
+
+output "eks_node_arn" {
+  value = aws_iam_role.eks_node.arn
+}
