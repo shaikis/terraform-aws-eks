@@ -7,4 +7,4 @@ variable "cluster_timeouts" {
     type = "map"
     default = {}
 }
-variable "bastion_sg" {}
+#variable "bastion_sg" {}
