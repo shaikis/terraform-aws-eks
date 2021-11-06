@@ -4,7 +4,7 @@ variable "subnet_ids" {
     type = list
 }
 variable "cluster_timeouts" {
-    type = "map"
+    type = map
     default = {}
 }
 #variable "bastion_sg" {}
