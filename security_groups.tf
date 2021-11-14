@@ -29,12 +29,11 @@ resource "aws_security_group" "eks_node" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = "${
-    map(
-     "Name", "${var.eks_cluster_name}-eks-node",
-     "kubernetes.io/cluster/${var.eks_cluster_name}", "owned",
-    )
-  }"
+  tags = {
+      Name = "${var.eks_cluster_name}-eks-node",
+     "kubernetes.io/cluster/${var.eks_cluster_name}" = "owned",
+   
+  }
    
 }
 
