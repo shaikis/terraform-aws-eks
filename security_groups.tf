@@ -11,7 +11,7 @@ resource "aws_security_group" "eks_cluster" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "${var.eks_cluster_name}-SG" # TODO variable
   }
 
