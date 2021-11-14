@@ -1,4 +1,4 @@
-
+# cluster
 resource "aws_security_group" "eks_cluster" {
   name        = "eks-cluster"
   description = "Cluster communication with worker nodes"
@@ -11,16 +11,10 @@ resource "aws_security_group" "eks_cluster" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-}
+  tags {
+    Name = "${var.eks_cluster_name}-SG" # TODO variable
+  }
 
-resource "aws_security_group_rule" "eks_cluster_ingress_workstation_https" {
-  description = "Allow worker node to communicate with each other"
-  from_port         = 443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.eks_cluster.id
-  source_security_group_id = aws_security_group.eks_node.id
-  to_port           = 443
-  type              = "ingress"
 }
 
 # Nodes
@@ -35,19 +29,37 @@ resource "aws_security_group" "eks_node" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  tags = "${
+    map(
+     "Name", "${var.eks_cluster_name}-eks-node",
+     "kubernetes.io/cluster/${var.cluster_name}", "owned",
+    )
+  }"
    
 }
 
+resource "aws_security_group_rule" "eks_cluster_ingress_workstation_https" {
+  description = "Allow worker node to communicate with each other"
+  from_port         = 443
+  protocol          = "tcp"
+  security_group_id = aws_security_group.eks_cluster.id
+  to_port           = 443
+  type              = "ingress"
+}
 
-#resource "aws_security_group_rule" "eks_cluster_ingress_node_https" {
-#  description              = "Allow pods to communicate with the cluster API Server"
-#  from_port                = 443
-#  protocol                 = "tcp"
-#  security_group_id        = aws_security_group.eks_cluster.id
-#  source_security_group_id = aws_security_group.eks_node.id
-#  to_port                  = 443
-#  type                     = "ingress"
-#}
+
+
+
+resource "aws_security_group_rule" "eks_cluster_ingress_node_https" {
+  description              = "Allow pods to communicate with the cluster API Server"
+  from_port                = 443
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.eks_cluster.id
+  source_security_group_id = aws_security_group.eks_node.id
+  to_port                  = 443
+  type                     = "ingress"
+}
+
 
 resource "aws_security_group_rule" "eks_node_ingress_self" {
   description              = "Allow node to communicate with each other"

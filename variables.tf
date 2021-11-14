@@ -8,6 +8,6 @@ variable "cluster_timeouts" {
     default = {}
 }
 variable "eks_cluster_version" {
-    default = "1.2"
+    default = "1.21"
 }
 #variable "bastion_sg" {}
