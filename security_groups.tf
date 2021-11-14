@@ -32,7 +32,7 @@ resource "aws_security_group" "eks_node" {
   tags = "${
     map(
      "Name", "${var.eks_cluster_name}-eks-node",
-     "kubernetes.io/cluster/${var.cluster_name}", "owned",
+     "kubernetes.io/cluster/${var.eks_cluster_name}", "owned",
     )
   }"
    
